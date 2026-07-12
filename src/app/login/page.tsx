@@ -17,13 +17,17 @@ export default function LoginPage() {
   const [error, setError] = React.useState("");
   const [rememberMe, setRememberMe] = React.useState(true);
 
+  const redirectAfterLogin = (role: string) => {
+    router.push(role === "ADMIN" ? "/admin" : "/dashboard");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     try {
       const result = await login({ email, password }).unwrap();
       dispatch(setCredentials(result));
-      router.push("/dashboard");
+      redirectAfterLogin(result.user.role);
     } catch (err: any) {
       setError(err?.data?.message || "Invalid credentials. Please try again.");
     }
@@ -34,7 +38,7 @@ export default function LoginPage() {
     try {
       const result = await login({ email: "alex@university.edu", password: "password123" }).unwrap();
       dispatch(setCredentials(result));
-      router.push("/dashboard");
+      redirectAfterLogin(result.user.role);
     } catch (err: any) {
       setError(err?.data?.message || "Demo login failed. Please ensure the backend is running.");
     }

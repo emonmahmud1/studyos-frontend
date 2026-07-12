@@ -7,15 +7,18 @@ import Sidebar from "@/components/layout/Sidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
+  const user = useAppSelector((s) => s.auth.user);
   const router = useRouter();
 
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace("/login");
+    } else if (user?.role === "ADMIN") {
+      router.replace("/admin");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user, router]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || user?.role === "ADMIN") {
     return (
       <div className="h-screen flex items-center justify-center bg-slate-50 dark:bg-[#020617]">
         <div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
