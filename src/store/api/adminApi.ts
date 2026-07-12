@@ -48,7 +48,11 @@ export interface SystemInfo {
 }
 
 export interface PaginatedUsers {
-  data: AdminUser[]; total: number; page: number; limit: number; totalPages: number;
+  data: AdminUser[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 // ── API ──────────────────────────────────────────────────────────────────────

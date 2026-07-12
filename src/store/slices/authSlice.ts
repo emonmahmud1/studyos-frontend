@@ -21,10 +21,15 @@ interface AuthState {
 const loadFromStorage = (): Partial<AuthState> => {
   if (typeof window === "undefined") return {};
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const userRaw = localStorage.getItem("user");
+    const user = userRaw ? (JSON.parse(userRaw) as AuthUser) : null;
     return {
-      accessToken: localStorage.getItem("accessToken"),
-      refreshToken: localStorage.getItem("refreshToken"),
-      isAuthenticated: !!localStorage.getItem("accessToken"),
+      accessToken,
+      refreshToken,
+      user,
+      isAuthenticated: !!accessToken,
     };
   } catch {
     return {};
@@ -51,6 +56,7 @@ const authSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", action.payload.accessToken);
         localStorage.setItem("refreshToken", action.payload.refreshToken);
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
       }
     },
     updateUser(state, action: PayloadAction<Partial<AuthUser>>) {
@@ -66,6 +72,7 @@ const authSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
       }
     },
   },
