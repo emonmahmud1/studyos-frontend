@@ -194,7 +194,7 @@ export default function AdminUsersPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
-                  {data?.data.map((user) => (
+                  {data?.data?.map((user) => (
                     <tr key={user.id} className="hover:bg-slate-800/30 transition-colors group">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
@@ -260,7 +260,7 @@ export default function AdminUsersPage() {
               </div>
             )}
 
-            {data?.data.length === 0 && (
+            {data?.data?.length === 0 && (
               <div className="flex flex-col items-center justify-center py-16 text-slate-500">
                 <Users size={32} className="mb-3 opacity-40" />
                 <p className="text-sm font-semibold">No users found</p>
