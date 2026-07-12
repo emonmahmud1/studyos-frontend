@@ -28,10 +28,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   React.useEffect(() => {
     if (!isAuthenticated) { router.replace("/login"); return; }
-    if (user?.role !== "ADMIN") { router.replace("/dashboard"); }
+    // Wait for user to hydrate from localStorage before checking role
+    if (user !== null && user.role !== "ADMIN") { router.replace("/dashboard"); }
   }, [isAuthenticated, user, router]);
 
-  if (!isAuthenticated || user?.role !== "ADMIN") {
+  // Show spinner while: not authenticated OR user not yet hydrated OR user is not ADMIN
+  if (!isAuthenticated || user === null || user.role !== "ADMIN") {
     return (
       <div className="h-screen flex items-center justify-center bg-slate-950">
         <div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
